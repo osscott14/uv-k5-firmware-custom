@@ -820,11 +820,11 @@ void UI_DisplayMain(void) {
 #endif
         if (state == VFO_STATE_NORMAL || state == VFO_STATE_ALARM) {    // show the TX power
 
-            const char pwr_list[][2] = {"L", "M", "H"};
+            const char pwr_list[][5] = {"L", "M", "H"};
             const unsigned int i = vfoInfo->OUTPUT_POWER % 3;
 
 #if ENABLE_CHINESE_FULL != 4 || defined(ENABLE_ENGLISH)
-            UI_PrintStringSmall(pwr_list[i], LCD_WIDTH + 46, 0, line + 1); //中文信道1
+            UI_PrintStringSmall(pwr_list[i], LCD_WIDTH + 34, 0, line + 1); //中文信道1
 #else
 
             if (bFlagMr)
@@ -841,7 +841,7 @@ void UI_DisplayMain(void) {
             const unsigned int i = vfoInfo->TX_OFFSET_FREQUENCY_DIRECTION % 3;
 
 #if ENABLE_CHINESE_FULL != 4 || defined(ENABLE_ENGLISH)
-            UI_PrintStringSmall(dir_list[i], LCD_WIDTH + 54, 0, line + 1);//中文信道1
+            UI_PrintStringSmall(dir_list[i], LCD_WIDTH + 52, 0, line + 1);//中文信道1
 #else
             if (bFlagMr)
                 UI_PrintStringSmall(dir_list[i], LCD_WIDTH + 17, 0, line - 1); //中文信道1
@@ -854,7 +854,7 @@ void UI_DisplayMain(void) {
         if (vfoInfo->FrequencyReverse) {
             char *flag = vfoInfo->FrequencyReverse == 1 ? "R" : "T";
 #if ENABLE_CHINESE_FULL != 4 || defined(ENABLE_ENGLISH)
-            UI_PrintStringSmall(flag, LCD_WIDTH + 62, 0, line + 1);//中文信道1
+            UI_PrintStringSmall(flag, LCD_WIDTH + 58, 0, line + 1);//中文信道1
 #else
             if (bFlagMr)
                 UI_PrintStringSmall(flag, LCD_WIDTH + 24, 0, line - 1); //中文信道1
@@ -867,7 +867,7 @@ void UI_DisplayMain(void) {
             // show the narrow band symbol
             if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW) {
 #if ENABLE_CHINESE_FULL != 4 || defined(ENABLE_ENGLISH)
-                UI_PrintStringSmall("N", LCD_WIDTH + 70, 0, line + 1);
+                UI_PrintStringSmall("N", LCD_WIDTH + 64, 0, line + 1);
 #else
                 if (IS_MR_CHANNEL(gEeprom.ScreenChannel[vfo_num]))
                     UI_PrintStringSmall("N", LCD_WIDTH + 21, 0, line + 1);
