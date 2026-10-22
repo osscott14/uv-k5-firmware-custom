@@ -353,6 +353,41 @@ void UI_DisplayMain(void) {
     // clear the screen
     UI_DisplayClear();
 
+    // Put our Giant-Font MDC intercept card right here
+#ifdef ENABLE_MDC1200
+    if (mdc1200_rx_ready_tick_500ms > 0) {
+        char mdc1200_contact;
+
+        // Parse if it is a saved contact name or a raw ID string
+        if (mdc1200_contact_find(mdc1200_unit_id, mdc1200_contact))
+        {
+            memcpy(String, mdc1200_contact, 14);
+            String = 0;
+        } else {
+            // Keep it strictly formatted as a 4-digit code so the big font engine doesn't break
+            sprintf(String, "%04X", mdc1200_unit_id);
+        }
+
+        // Draw a clean small title card row near the top edge
+        UI_PrintStringSmall("MDC CALL ID", 0, 127, 1);
+
+        // 3. THE GIANT FONT RENDERER:
+        // Pass your 4-digit string through the big frequency font engine.
+        // - "String" is your text data.
+        // - 32 is the X-column coordinate (places it beautifully in the horizontal center).
+        // - 3 is the vertical row offset (drops the giant text block right into the center of the display).
+        // - false tells the engine NOT to print a decimal point.
+        UI_DisplayFrequency(String, 32, 3, false);
+
+        // Flush our custom canvas directly to the physical LCD glass
+        ST7565_BlitFullScreen();
+
+        // Exit immediately! This stops the radio from processing standard VFO lines
+        return;
+    }
+#endif
+
+
     if (gLowBattery && !gLowBatteryConfirmed) {
         //低电压
         UI_DisplayPopup(低电压);
@@ -874,34 +909,6 @@ void UI_DisplayMain(void) {
     if (center_line == CENTER_LINE_NONE) {    // we're free to use the middle line
 
         const bool rx = FUNCTION_IsRx();
-#ifdef ENABLE_MDC1200
-
-        if (mdc1200_rx_ready_tick_500ms > 0) {
-            char mdc1200_contact[14];
-            center_line = CENTER_LINE_MDC1200;
-            uint8_t print_col = 0;
-            if (mdc1200_contact_find(mdc1200_unit_id, mdc1200_contact))//
-            {
-
-                memcpy(String, mdc1200_contact, 14);
-                String[14] = 0;
-                print_col = 29;
-            } else {
-                sprintf(String, "ID %04X", mdc1200_unit_id);
-                print_col = 40;
-            }
-
-//#ifdef ENABLE_MDC1200_SHOW_OP_ARG
-//                sprintf(String, "MDC1200 %02X %02X %04X", mdc1200_op, mdc1200_arg, mdc1200_unit_id);
-//#else
-//                sprintf(String, "MDC1200 ID %04X", mdc1200_unit_id);
-//#endif
-
-            UI_PrintStringSmall(String, print_col, 0, 3);
-
-
-        } else
-#endif
 
 //#ifdef ENABLE_AUDIO_BAR
         if (gCurrentFunction == FUNCTION_TRANSMIT) {

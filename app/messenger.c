@@ -664,7 +664,7 @@ void solve_sign(const uint16_t interrupt_bits) {
                     &mdc1200_op,
                     &mdc1200_arg,
                     &mdc1200_unit_id)) {
-                mdc1200_rx_ready_tick_500ms = 2 * 5;  // 6 second MDC display time
+                mdc1200_rx_ready_tick_500ms = 2 * 5;  // 5 second MDC display time
                 gUpdateDisplay = true;
 
             }
