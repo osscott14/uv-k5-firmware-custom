@@ -356,13 +356,13 @@ void UI_DisplayMain(void) {
     // Put our Giant-Font MDC intercept card right here
 #ifdef ENABLE_MDC1200
     if (mdc1200_rx_ready_tick_500ms > 0) {
-        char mdc1200_contact;
+        char mdc1200_contact[14];
 
         // Parse if it is a saved contact name or a raw ID string
         if (mdc1200_contact_find(mdc1200_unit_id, mdc1200_contact))
         {
             memcpy(String, mdc1200_contact, 14);
-            String = 0;
+            String[0] = '/0' ;
         } else {
             // Keep it strictly formatted as a 4-digit code so the big font engine doesn't break
             sprintf(String, "%04X", mdc1200_unit_id);
