@@ -258,7 +258,7 @@ void RADIO_ConfigureChannel(const unsigned int VFO, const unsigned int configure
                 break;
 
             case CODE_TYPE_CONTINUOUS_TONE:
-                if (tmp > (50 - 1))
+                if (tmp > (56 - 1))
                     tmp = 0;
                 break;
 
@@ -279,7 +279,7 @@ void RADIO_ConfigureChannel(const unsigned int VFO, const unsigned int configure
                 break;
 
             case CODE_TYPE_CONTINUOUS_TONE:
-                if (tmp > (50 - 1))
+                if (tmp > (56 - 1))
                     tmp = 0;
                 break;
 
