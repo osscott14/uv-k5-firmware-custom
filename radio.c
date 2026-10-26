@@ -492,9 +492,9 @@ void RADIO_ConfigureSquelchAndOutputPower(VFO_Info_t *pInfo) {
 #ifdef ENABLE_REDUCE_LOW_MID_TX_POWER
     // make low and mid even lower. each register has its own starting value: low is 20-45, mid is 80-105 and high is 127. so each divisor is specific to each power setting register
     if (pInfo->OUTPUT_POWER == OUTPUT_POWER_LOW) {
-        Txp[0] /= 9;
-        Txp[1] /= 9;
-        Txp[2] /= 9;
+        Txp[0] /= 4;
+        Txp[1] /= 4;
+        Txp[2] /= 4;
     }
     else if (pInfo->OUTPUT_POWER == OUTPUT_POWER_MID){
         Txp[0] /= 2;
