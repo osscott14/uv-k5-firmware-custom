@@ -73,7 +73,7 @@ ENABLE_4732SSB = 1
 
 ENABLE_DOPPLER               = 0
 #############################################################
-PACKED_FILE_SUFFIX = LOSEHU133
+PACKED_FILE_SUFFIX = MODEL-14
 ifeq ($(ENABLE_PINYIN),1)
 	ENABLE_CHINESE_FULL=4
 endif
@@ -85,7 +85,7 @@ endif
 ifeq ($(ENABLE_CHINESE_FULL),0)
     ifeq ($(ENABLE_ENGLISH),1)
         $(info E)
-        PACKED_FILE_SUFFIX := $(PACKED_FILE_SUFFIX)E
+        # PACKED_FILE_SUFFIX := $(PACKED_FILE_SUFFIX)E
         ENABLE_CUSTOM_SIDEFUNCTIONS := 0
         ENABLE_SIDEFUNCTIONS_SEND := 0
     else ifeq ($(ENABLE_MESSENGER),1)
