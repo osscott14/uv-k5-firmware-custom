@@ -653,20 +653,23 @@ void RADIO_SetupRegisters(bool switchToForeground) {
                     break;
 
                 case CODE_TYPE_CONTINUOUS_TONE:
-
-#if ENABLE_CHINESE_FULL == 0 ||defined(ENABLE_ENGLISH)
+#if ENABLE_CHINESE_FULL == 0 || defined(ENABLE_ENGLISH)
                     BK4819_SetCTCSSFrequency(CTCSS_Options[Code]);
 #else
                     EEPROM_ReadBuffer(0x02C00+(Code)*2, read_tmp, 2);
                     uint16_t CTCSS_Options_read=read_tmp[0]|(read_tmp[1]<<8);
-                                BK4819_SetCTCSSFrequency(CTCSS_Options_read);
-
+                    BK4819_SetCTCSSFrequency(CTCSS_Options_read);
 #endif
-                    //#ifndef ENABLE_CTCSS_TAIL_PHASE_SHIFT
-                    BK4819_SetTailDetection(550);        // QS's 55Hz tone method
-                    //#else
-                    //	BK4819_SetTailDetection(CTCSS_Options[Code]);
-                    //#endif
+
+                    // --- NEXUS PREFIX CHANNEL NAME CHECK ---
+                    // Matches any channel name starting with "NEXUS"
+                    if (strncmp(gRxVfo->Name, "NEXUS", 5) == 0) {
+                        BK4819_SetTailDetection(590);  // Catch the SHARI's 59Hz tail tone
+                    } 
+                    // Matches any other channel name (Standard Repeaters / Simplex)
+                    else {
+                        BK4819_SetTailDetection(550);  // Use clean stock 55Hz logic so RX doesn't break
+                    }
 
                     InterruptMask = 0
                                     | BK4819_REG_3F_CxCSS_TAIL
@@ -674,7 +677,6 @@ void RADIO_SetupRegisters(bool switchToForeground) {
                                     | BK4819_REG_3F_CTCSS_LOST
                                     | BK4819_REG_3F_SQUELCH_FOUND
                                     | BK4819_REG_3F_SQUELCH_LOST;
-
                     break;
 
                 case CODE_TYPE_DIGITAL:
